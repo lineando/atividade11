@@ -20,6 +20,7 @@ elementoBody.style.height = '100vh'; // Para ocupar toda a altura da tela
 elementoBody.style.display = 'flex';
 elementoBody.style.alignItems = 'center';
 elementoBody.style.justifyContent = 'center';
+elementoBody.style.position = 'relative'; // Para posicionar os símbolos
 
 // Estilizando o novo elemento
 novoElemento.style.backgroundColor = 'blue';
@@ -34,7 +35,7 @@ function animarTitulo() {
     let index = 0;
 
     setInterval(() => {
-        // Muda a cor
+        // Muda a cor do título
         novoElemento.style.color = cores[index];
         index = (index + 1) % cores.length;
 
@@ -44,5 +45,61 @@ function animarTitulo() {
     }, 1000);
 }
 
-// Inicia a animação
+// Função para criar e animar símbolos
+function criarSimbolos() {
+    const simbolos = ['★', '♥', '♦', '☼', '★'];
+    const numeroSimbolos = 10;
+
+    for (let i = 0; i < numeroSimbolos; i++) {
+        const simbolo = document.createElement('div');
+        simbolo.innerText = simbolos[i % simbolos.length];
+        simbolo.style.position = 'absolute';
+        simbolo.style.fontSize = '24px';
+        simbolo.style.opacity = '0.8';
+
+        // Posicionamento aleatório
+        simbolo.style.left = Math.random() * 100 + 'vw';
+        simbolo.style.top = Math.random() * 100 + 'vh';
+
+        elementoBody.appendChild(simbolo);
+
+        // Animação do símbolo
+        setInterval(() => {
+            simbolo.style.color = cores[Math.floor(Math.random() * cores.length)];
+            simbolo.style.transform = `translateY(${Math.sin(Date.now() / 1000 + i) * 20}px)`;
+        }, 500);
+    }
+}
+
+// Criando a segunda caixa de texto
+function criarNome() {
+    let nomeElemento = document.createElement('h2');
+    nomeElemento.innerText = 'Aline Moreira Araújo';
+    nomeElemento.style.position = 'absolute';
+    nomeElemento.style.bottom = '20px'; // Posiciona a caixa na parte inferior
+    nomeElemento.style.textAlign = 'center';
+    nomeElemento.style.fontSize = '24px';
+    nomeElemento.style.transition = 'color 1s, transform 1s';
+    nomeElemento.style.color = 'darkblue';
+
+    elementoBody.appendChild(nomeElemento);
+
+    // Animação para a segunda caixa
+    const coresNome = ['blue', 'purple', 'pink', 'green', 'orange'];
+    let index = 0;
+
+    setInterval(() => {
+        // Muda a cor do nome
+        nomeElemento.style.color = coresNome[index];
+        index = (index + 1) % coresNome.length;
+
+        // Aplica rotação e translação
+        let rotacao = (parseFloat(nomeElemento.style.transform.replace('rotate(', '').replace('deg)', '')) || 0) + 10;
+        nomeElemento.style.transform = `rotate(${rotacao}deg) translateY(-5px)`;
+    }, 1000);
+}
+
+// Inicia as animações
 animarTitulo();
+criarSimbolos();
+criarNome();
